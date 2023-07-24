@@ -5,13 +5,12 @@ import com.pokemonreview.api.models.PokemonType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -51,5 +50,70 @@ class PokemonRepositoryTests {
 
         Assertions.assertThat(pokemonList).isNotNull();
         Assertions.assertThat(pokemonList.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void PokemonRepository_FindById_ReturnPokemon() {
+        Pokemon pokemon = Pokemon.builder()
+                .name("pikachu")
+                .type(PokemonType.ELECTRIC).build();
+
+        pokemonRepository.save(pokemon);
+
+        Pokemon savedPokemon = pokemonRepository
+                .findById(pokemon.getId())
+                .get();
+
+        Assertions.assertThat(savedPokemon).isNotNull();
+        Assertions.assertThat(savedPokemon.getName()).isEqualTo("pikachu");
+    }
+
+    @Test
+    public void PokemonRepository_FindByType_ReturnPokemonNotNull() {
+        Pokemon pokemon = Pokemon.builder()
+                .name("pikachu")
+                .type(PokemonType.ELECTRIC).build();
+
+        pokemonRepository.save(pokemon);
+
+        Pokemon pokemonList = pokemonRepository
+                .findByType(pokemon.getType())
+                .get();
+
+        Assertions.assertThat(pokemonList).isNotNull();
+    }
+
+    @Test
+    public void PokemonRepository_UpdatePokemon_ReturnPokemonNotNull() {
+        Pokemon pokemon = Pokemon.builder()
+                .name("pikachu")
+                .type(PokemonType.ELECTRIC)
+                .build();
+
+        pokemonRepository.save(pokemon);
+
+        Pokemon pokemonSave = pokemonRepository.findById(pokemon.getId()).get();
+        pokemonSave.setName("Raichu");
+        pokemonSave.setType(PokemonType.NORMAL);
+
+        Assertions.assertThat(pokemonSave.getName()).isEqualTo("Raichu");
+        Assertions.assertThat(pokemonSave.getType()).isEqualTo(PokemonType.NORMAL);
+
+        System.out.println("pokemonSave = " + pokemonSave);
+    }
+
+    @Test
+    public void PokemonRepository_PokemonDelete_ReturnPokemonIsEmpty() {
+        Pokemon pokemon = Pokemon.builder()
+                .name("pikachu")
+                .type(PokemonType.ELECTRIC)
+                .build();
+
+        pokemonRepository.save(pokemon);
+
+        pokemonRepository.deleteById(pokemon.getId());
+        Optional<Pokemon> pokemonReturn = pokemonRepository.findById(pokemon.getId());
+
+        Assertions.assertThat(pokemonReturn).isEmpty();
     }
 }
