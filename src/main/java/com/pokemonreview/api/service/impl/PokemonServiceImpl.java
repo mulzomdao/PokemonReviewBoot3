@@ -1,4 +1,4 @@
-package com.pokemonreview.api.service;
+package com.pokemonreview.api.service.impl;
 
 import com.pokemonreview.api.dto.PageResponse;
 import com.pokemonreview.api.dto.PokemonDto;
