@@ -62,13 +62,10 @@ public class ReviewServiceTests {
 
     @Test
     public void ReviewService_CreateReview_ReturnsReviewDto() {
-        when(pokemonRepository.findById(pokemon.getId()))
-                .thenReturn(Optional.of(pokemon));
-        when(reviewRepository.save(Mockito.any(Review.class)))
-                .thenReturn(review);
+        when(pokemonRepository.findById(pokemon.getId())).thenReturn(Optional.of(pokemon));
+        when(reviewRepository.save(Mockito.any(Review.class))).thenReturn(review);
 
-        ReviewDto savedReview =
-                reviewService.createReview(pokemon.getId(), reviewDto);
+        ReviewDto savedReview = reviewService.createReview(pokemon.getId(), reviewDto);
 
         Assertions.assertThat(savedReview).isNotNull();
         System.out.println("savedReview = " + savedReview);
@@ -76,12 +73,10 @@ public class ReviewServiceTests {
 
     @Test
     public void ReviewService_GetReviewsByPokemonId_ReturnReviewDto() {
-        int reviewId = 1;
-        when(reviewRepository.findByPokemonId(reviewId))
-                .thenReturn(Arrays.asList(review));
+        int pokemonId = 1;
+        when(reviewRepository.findByPokemonId(pokemonId)).thenReturn(Arrays.asList(review));
 
-        List<ReviewDto> pokemonReturn =
-                reviewService.getReviewsByPokemonId(reviewId);
+        List<ReviewDto> pokemonReturn = reviewService.getReviewsByPokemonId(pokemonId);
 
         Assertions.assertThat(pokemonReturn).isNotNull();
         System.out.println("pokemonReturn = " + pokemonReturn);
@@ -94,13 +89,10 @@ public class ReviewServiceTests {
 
         review.setPokemon(pokemon);
 
-        when(pokemonRepository.findById(pokemonId))
-                .thenReturn(Optional.of(pokemon));
-        when(reviewRepository.findById(reviewId))
-                .thenReturn(Optional.of(review));
+        when(pokemonRepository.findById(pokemonId)).thenReturn(Optional.of(pokemon));
+        when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
 
-        ReviewDto reviewReturn =
-                reviewService.getReviewById(reviewId, pokemonId);
+        ReviewDto reviewReturn = reviewService.getReviewById(reviewId, pokemonId);
 
         Assertions.assertThat(reviewReturn).isNotNull();
         System.out.println("reviewReturn = " + reviewReturn);
@@ -114,15 +106,11 @@ public class ReviewServiceTests {
         pokemon.setReviews(Arrays.asList(review));
         review.setPokemon(pokemon);
 
-        when(pokemonRepository.findById(pokemonId))
-                .thenReturn(Optional.of(pokemon));
-        when(reviewRepository.findById(reviewId))
-                .thenReturn(Optional.of(review));
-        when(reviewRepository.save(review))
-                .thenReturn(review);
+        when(pokemonRepository.findById(pokemonId)).thenReturn(Optional.of(pokemon));
+        when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+        when(reviewRepository.save(review)).thenReturn(review);
 
-        ReviewDto updateReturn =
-                reviewService.updateReview(pokemonId, reviewId, reviewDto);
+        ReviewDto updateReturn = reviewService.updateReview(pokemonId, reviewId, reviewDto);
 
         Assertions.assertThat(updateReturn).isNotNull();
         System.out.println("updateReturn = " + updateReturn);
@@ -136,10 +124,8 @@ public class ReviewServiceTests {
         pokemon.setReviews(Arrays.asList(review));
         review.setPokemon(pokemon);
 
-        when(pokemonRepository.findById(pokemonId))
-                .thenReturn(Optional.of(pokemon));
-        when(reviewRepository.findById(reviewId))
-                .thenReturn(Optional.of(review));
+        when(pokemonRepository.findById(pokemonId)).thenReturn(Optional.of(pokemon));
+        when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
 
         assertAll(() -> reviewService.deleteReview(pokemonId, reviewId));
     }
