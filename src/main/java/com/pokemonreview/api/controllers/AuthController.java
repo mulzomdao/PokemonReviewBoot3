@@ -53,10 +53,10 @@ public class AuthController {
 
         AuthResponseDto authResponseDTO = new AuthResponseDto(token);
         authResponseDTO.setUsername(loginDto.getUsername());
-        Optional<UserEntity> ou = userRepository.findByUsername((loginDto.getUsername()));
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUsername((loginDto.getUsername()));
 
-        if (ou.isEmpty()) {
-            UserEntity userEntity = ou.get();
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
             authResponseDTO.setRole(userEntity.getRoles().get(0).getName());
         }
         return new ResponseEntity<>(authResponseDTO, HttpStatus.OK);

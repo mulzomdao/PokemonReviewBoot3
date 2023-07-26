@@ -37,12 +37,17 @@ public class GlobalExceptionHandler {
         return ret;
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorObject> accessDeniedExceptionHandler(AccessDeniedException ex) {
-        ErrorObject errorObject = new ErrorObject();
-        errorObject.setStatusCode(HttpStatus.FORBIDDEN.value());
-        errorObject.setMessage(ex.getMessage());
-
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.FORBIDDEN);
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public void accessDeniedExceptionHandler(Exception e) {
+        throw new AccessDeniedException(e.getMessage());
     }
+
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public ResponseEntity<ErrorObject> accessDeniedExceptionHandler(AccessDeniedException ex) {
+//        ErrorObject errorObject = new ErrorObject();
+//        errorObject.setStatusCode(HttpStatus.FORBIDDEN.value());
+//        errorObject.setMessage(ex.getMessage());
+//
+//        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.FORBIDDEN);
+//    }
 }
